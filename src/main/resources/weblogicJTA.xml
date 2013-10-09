@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+	    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd	    
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<util:map id="jpaProperties" map-class="java.util.HashMap" key-type="java.lang.String" value-type="java.lang.String">
+		<!-- DEFINIMOS LA FORMA DE GESTIONAR LAS TRANSACCIONES  -->
+		<entry key="hibernate.transaction.factory_class" value="org.hibernate.transaction.JTATransactionFactory" />
+		<entry key="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.WeblogicTransactionManagerLookup" />
+		<entry key="hibernate.current_session_context_class" value="jta" />
+		
+		<entry key="hibernate.dialect" value="org.hibernate.dialect.OracleDialect" />
+		<entry key="hibernate.show_sql" value="true" />
+		<entry key="hibernate.format_sql" value="true" />
+	</util:map>
+
+
+	<bean id="delphosDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiTemplate">
+			<ref bean="jndiTemplate" />
+		</property>
+		<property name="jndiName">
+			<value>jdbc/wsc_delphos</value>
+		</property>
+	</bean>
+	
+	<bean id="secvirDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiTemplate">
+			<ref bean="jndiTemplate" />
+		</property>
+		<property name="jndiName">
+			<value>jdbc/wsc_secvir</value>
+		</property>
+	</bean>	
+
+	
+	<bean id="jndiTemplate" class="org.springframework.jndi.JndiTemplate" />
+
+
+	<bean id="txManager" class="org.springframework.transaction.jta.WebLogicJtaTransactionManager" />
+
+
+
+</beans>
